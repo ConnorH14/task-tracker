@@ -1,0 +1,86 @@
+:root{
+  --light: #e8f1f1;
+}
+
+body{
+  font-family: 'Inter', sans-serif;
+}
+
+body li{
+  font-family: 'Cabin', sans-serif;
+}
+
+.text-icon{
+  color: #75E5E6;
+  font-size: 50px;
+  text-shadow: 1px 1px 20px #FFDCF4;
+  -webkit-text-stroke: 2px black;
+  display: inline;
+}
+
+.task-container{
+  padding-top: 10px;
+}
+
+.task-header{
+  background-color: #0000002a;
+  margin: 0;
+  color: #ece5e5;
+  padding: 20px;
+}
+
+.task-card{
+  border-radius: 0 0 20px 20px;
+  box-shadow: 5px 5px 20px 2px black;
+}
+
+.task-list{
+  list-style: none;
+  color: #272729;
+}
+
+.task-list i{
+  margin-left: 50%;
+}
+
+.fa-minus-circle{
+  color: #c0b7b7;
+}
+
+.fa-minus-circle:hover{
+  color: #F66A67;
+  cursor: pointer;
+}
+
+input[type=checkbox] {
+  transform: scale(2);
+}
+
+input[type=text] {
+  background: none;
+  font-size: 18px;
+  color: #f5f1f1;
+  padding: 3px;
+  border: none;
+}
+
+.add-task{
+  color: black !important;
+}
+
+::placeholder {
+  color: #f5f1f1;
+}
+
+.add-task::placeholder{
+  color: black;
+}
+
+@media screen and (max-width: 600px) {
+  .text-icon{
+    display: none; 
+  }
+  .task-list i{
+    margin-left: 25%;
+  }
+}
