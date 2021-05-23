@@ -8,12 +8,16 @@ class AppState extends EventEmitter {
 
   lists = [
       new List('Task One', 'blue', [
-        new Item('Do this'),
+        new Item('Do this task task taks fahjighpo'),
         new Item('Do that')]
       ),
       new List('Task Two', 'green', [
         new Item('Do what'),
         new Item('Do not')]
+      ),
+      new List('Task Three', '#bbceed', [
+        new Item('Do agpiughauphguidhauishguidhapuighdiupoas'),
+        new Item('ahugdhauishguipdhaiuoghdpoiahgiuodhpudgahuoiadsghuio')]
       ) 
   ];
 

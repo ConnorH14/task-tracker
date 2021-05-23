@@ -13,15 +13,27 @@ function _drawLists(){
   // })
 
   for(let i = 0; i < lists.length; i++){
-    for(let x = 0; x < lists[i].items.length; x++){
-      itemTemplate += lists[i].items[x].task
+    for(let x = 0; x < lists[i].items.length; x++){  
+      itemTemplate += /*html*/ `
+      <li>
+          <div class="row">
+              <div class="col-10">
+                  <input onclick="swal('You completed a task!', 'Good Job!', 'success');" class="form-check-input" type="checkbox" value="" >
+                  <label class="form-check-label ml-3" for="flexCheckDefault"><p>${lists[i].items[x].task}</p></label>
+              </div>
+              <div class="col-2">
+                  <i onclick="swal('Would you like to delete task?', {buttons: ['Cancel', true],});" class="fas fa-minus-circle"></i>
+              </div>
+          </div>
+      </li>
+      `
     }
     template += /*html*/ `
     <div class="col-lg-4">
         <div class="p-0 my-3 task-card" style="background-color: ${lists[i].color}">
             <h2 class="text-center mb-lg-4 task-header"><b>${lists[i].title}</b></h2>
             <ul class="task-list m-3">
-                ${itemTemplate}
+              ${itemTemplate}
             </ul>
             <div class="p-3">
                 <form>
