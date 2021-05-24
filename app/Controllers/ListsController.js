@@ -7,10 +7,17 @@ function _drawLists(){
   let listElm = document.getElementById('list-container')
   let template = ''
   let itemTemplate = ''
+  let completedCounter = 0
+  let totalCounter = 0
 
   for(let i = 0; i < lists.length; i++){
     if(lists[i].items){
       for(let x = 0; x < lists[i].items.length; x++){
+        if(lists[i].items[x].check == true){
+          completedCounter++
+        }
+        totalCounter = lists[i].items.length
+        
         itemTemplate += /*html*/ `
         <li id="item-${lists[i].items[x].id}">
             <div class="row">
@@ -25,13 +32,14 @@ function _drawLists(){
         </li>
         `
       }
+      
     }
     
     template += /*html*/ `
     <div class="col-lg-4">
         <div class="p-0 my-3 task-card" style="background-color: ${lists[i].color}">
             <h2 class="text-center mb-lg-4 task-header"><b>${lists[i].title}</b><i onclick="app.listsController.deleteList('${i}')" class="fas fa-minus delete-list ml-3"></i></h2>
-            <small class="ml-4 text-light">Completed: <span id="item-counter-${i}"></span></small>
+            <small class="ml-4 text-light">Completed: <span>${completedCounter}</span>/<span>${totalCounter}</span></small>
             <ul class="task-list m-3">
               ${itemTemplate}
             </ul>
@@ -48,30 +56,13 @@ function _drawLists(){
         </div>
     </div>
     `
+    completedCounter = 0
+    totalCounter = 0
     itemTemplate = ''
-    //_drawCompleted(i)
   }
   listElm.innerHTML = template
   drawChecks()
 
-  function _drawCompleted(){
-    let lists = ProxyState.lists
-    let completedCounter = 0
-    for(let i = 0; i < lists.length; i++){
-      if(lists[i].items){
-        for(let x = 0; x < lists[i].items.length; x++){
-          if(lists[i].items[x].check == true){
-            completedCounter++
-          }
-        }
-        document.getElementById(`item-counter-${i}`).innerHTML = /*html*/`
-          ${completedCounter}/${lists[i].items.length}
-        `
-      }else{
-        //document.getElementById(`item-counter-${i}`).innerHTML = "0/0"
-      }
-    }
-  }
 }
 
 function _drawChecks(){

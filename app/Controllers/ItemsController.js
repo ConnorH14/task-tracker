@@ -9,9 +9,12 @@ export class ItemsController {
     if(document.getElementById(`check-${id}`).checked){
       swal('You completed a task!', 'Good Job!', 'success');
       ProxyState.lists[list].items[item].check = true
+      ProxyState.lists = ProxyState.lists
       save()
+      
     }else{
       ProxyState.lists[list].items[item].check = false
+      ProxyState.lists = ProxyState.lists
       save()
     }
   }
