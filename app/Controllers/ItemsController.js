@@ -1,12 +1,18 @@
 import { ProxyState } from "../AppState.js";
 import { itemsService } from "../Services/ItemsServices.js";
-import { save } from "../Utils/LocalStorage.js";
+import { load, save } from "../Utils/LocalStorage.js";
+import { drawChecks} from "../Controllers/ListsController.js"
 
 export class ItemsController {
 
-  checkboxChecked(id){
+  checkboxChecked(list, item, id){
     if(document.getElementById(`check-${id}`).checked){
       swal('You completed a task!', 'Good Job!', 'success');
+      ProxyState.lists[list].items[item].check = true
+      save()
+    }else{
+      ProxyState.lists[list].items[item].check = false
+      save()
     }
   }
 
@@ -18,9 +24,11 @@ export class ItemsController {
     }
     itemsService.newItem(newItem, list)
     form.reset()
+    drawChecks()
   }
 
   deleteItem(list, item){
+    drawChecks()
     swal('Would you like to delete task?', {buttons: ['Cancel', true],}
     ).then(function(isConfirm){
       if(isConfirm){
@@ -30,6 +38,7 @@ export class ItemsController {
         }
         ProxyState.lists = ProxyState.lists
         save()
+        drawChecks()
       }
     })
   }

@@ -15,7 +15,7 @@ function _drawLists(){
         <li id="item-${lists[i].items[x].id}">
             <div class="row">
                 <div class="col-10">
-                    <input onclick="app.itemsController.checkboxChecked('${lists[i].items[x].id}')" class="form-check-input" type="checkbox" value="" id='check-${lists[i].items[x].id}'>
+                    <input onclick="app.itemsController.checkboxChecked('${i}','${x}','${lists[i].items[x].id}')" class="form-check-input" type="checkbox" value="" id='check-${lists[i].items[x].id}'>
                     <label class="form-check-label ml-3" for="flexCheckDefault"><p>${lists[i].items[x].task}</p></label>
                 </div>
                 <div class="col-2">
@@ -26,10 +26,12 @@ function _drawLists(){
         `
       }
     }
+    
     template += /*html*/ `
     <div class="col-lg-4">
         <div class="p-0 my-3 task-card" style="background-color: ${lists[i].color}">
             <h2 class="text-center mb-lg-4 task-header"><b>${lists[i].title}</b><i onclick="app.listsController.deleteList('${i}')" class="fas fa-minus delete-list ml-3"></i></h2>
+            <small class="ml-4 text-light">Completed: <span id="item-counter-${i}"></span></small>
             <ul class="task-list m-3">
               ${itemTemplate}
             </ul>
@@ -47,15 +49,52 @@ function _drawLists(){
     </div>
     `
     itemTemplate = ''
+    //_drawCompleted(i)
   }
   listElm.innerHTML = template
+  drawChecks()
+
+  function _drawCompleted(){
+    let lists = ProxyState.lists
+    let completedCounter = 0
+    for(let i = 0; i < lists.length; i++){
+      if(lists[i].items){
+        for(let x = 0; x < lists[i].items.length; x++){
+          if(lists[i].items[x].check == true){
+            completedCounter++
+          }
+        }
+        document.getElementById(`item-counter-${i}`).innerHTML = /*html*/`
+          ${completedCounter}/${lists[i].items.length}
+        `
+      }else{
+        //document.getElementById(`item-counter-${i}`).innerHTML = "0/0"
+      }
+    }
+  }
 }
+
+function _drawChecks(){
+  let lists = ProxyState.lists
+
+  for(let i = 0; i < lists.length; i++){
+    if(lists[i].items){
+      for(let x = 0; x < lists[i].items.length; x++){
+        if(lists[i].items[x].check && lists[i].items[x].check == true){
+          document.getElementById(`check-${lists[i].items[x].id}`).checked = true
+        }
+      }
+    }
+  }
+}
+
 export class ListsController {
 
   constructor(){
     ProxyState.on('lists', _drawLists)
     load()
     _drawLists()
+    _drawChecks()
   }
 
   newList(event){
@@ -71,11 +110,33 @@ export class ListsController {
   }
 
   deleteList(list){
-    const remList = ProxyState.lists.indexOf(ProxyState.lists[list]);
+    drawChecks()
+    swal('Would you like to delete list?', {buttons: ['Cancel', true],}
+    ).then(function(isConfirm){
+      if(isConfirm){
+        const remList = ProxyState.lists.indexOf(ProxyState.lists[list]);
         if (remList > -1) {
           ProxyState.lists.splice(remList, 1);
         }
         ProxyState.lists = ProxyState.lists
         save()
+        drawChecks()
+      }
+    })
+  }
+
+}
+
+export function drawChecks(){
+  let lists = ProxyState.lists
+
+  for(let i = 0; i < lists.length; i++){
+    if(lists[i].items){
+      for(let x = 0; x < lists[i].items.length; x++){
+        if(lists[i].items[x].check && lists[i].items[x].check == true){
+          document.getElementById(`check-${lists[i].items[x].id}`).checked = true
+        }
+      }
+    }
   }
 }
