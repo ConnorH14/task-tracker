@@ -1,18 +1,36 @@
 import { ProxyState } from "../AppState.js";
-
-function _drawItems(){
-  // let itemTemplate = ''
-  // let items = ProxyState.items
-  // let itemsElm = document.getElementById('item-display')
-
-  // items.forEach(i => itemTemplate += i.Template)
-  // itemsElm.innerHTML = itemTemplate
-}
+import { itemsService } from "../Services/ItemsServices.js";
+import { save } from "../Utils/LocalStorage.js";
 
 export class ItemsController {
 
-  constructor(){
-    // ProxyState.on('items', _drawItems)
-    // _drawItems()
+  checkboxChecked(id){
+    if(document.getElementById(`check-${id}`).checked){
+      swal('You completed a task!', 'Good Job!', 'success');
+    }
+  }
+
+  newItem(event, list){
+    event.preventDefault()
+    let form = event.target
+    let newItem = {
+      task: form.task.value
+    }
+    itemsService.newItem(newItem, list)
+    form.reset()
+  }
+
+  deleteItem(list, item){
+    swal('Would you like to delete task?', {buttons: ['Cancel', true],}
+    ).then(function(isConfirm){
+      if(isConfirm){
+        const remItem = ProxyState.lists[list].items.indexOf(ProxyState.lists[list].items[item]);
+        if (remItem > -1) {
+          ProxyState.lists[list].items.splice(remItem, 1);
+        }
+        ProxyState.lists = ProxyState.lists
+        save()
+      }
+    })
   }
 }

@@ -5,6 +5,7 @@ class App {
   listsController = new ListsController()
 
   itemsController = new ItemsController()
+
 }
 
 window["app"] = new App();
